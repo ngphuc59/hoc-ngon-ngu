@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Học Ngôn Ngữ</title>
+  <meta name="description" content="Học cùng lúc tiếng Anh (UK), Trung, Nhật, Pháp, Tây Ban Nha từ con số 0, có hình ảnh, âm thanh và đồng bộ giữa các thiết bị.">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Học Ngôn Ngữ">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top">
+    <a href="#/" class="logo"><img src="icons/icon.svg" alt=""><span>Học Ngôn Ngữ</span></a>
+    <div id="langbar" class="langbar" aria-label="Ngôn ngữ đang học"></div>
+    <div id="stats" class="stats"></div>
+  </header>
+  <nav id="nav" class="nav">
+    <a href="#/"><span>🏠</span>Trang chủ</a>
+    <a href="#/scripts"><span>🔤</span>Chữ & âm</a>
+    <a href="#/review"><span>🔁</span>Ôn tập</a>
+    <a href="#/progress"><span>📊</span>Tiến độ</a>
+    <a href="#/settings"><span>⚙️</span>Cài đặt</a>
+  </nav>
+  <main id="app" tabindex="-1"></main>
+  <dialog id="modal"></dialog>
+  <noscript>Hãy bật JavaScript để dùng app.</noscript>
+  <script src="firebase-config.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
