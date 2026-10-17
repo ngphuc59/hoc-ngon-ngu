@@ -1,5 +1,5 @@
 // Cho phép app mở được khi mất mạng (ảnh/GIF/video vẫn cần mạng).
-const VERSION = 'hnn-v1';
+const VERSION = 'hnn-v2';
 const SHELL = [
   './', 'index.html', 'css/style.css', 'firebase-config.js', 'manifest.webmanifest',
   'js/app.js', 'js/langs.js', 'js/audio.js', 'js/store.js', 'js/media.js', 'js/sync.js',

@@ -87,7 +87,7 @@ function startListening(uid) {
     });
     sync.status = 'Đã đồng bộ'; sync.last = Date.now(); notify();
     schedulePush();
-  }, err => { sync.status = 'Lỗi đồng bộ'; sync.error = err.message; notify(); }));
+  }, err => { sync.status = 'Lỗi đồng bộ'; sync.error = friendlyError(err); notify(); }));
   schedulePush();
 }
 
@@ -121,8 +121,28 @@ async function push() {
     await batch.commit();
     sync.status = 'Đã đồng bộ'; sync.last = Date.now(); notify();
   } catch (e) {
-    sync.status = 'Lỗi đồng bộ'; sync.error = e.message; notify();
+    sync.status = 'Lỗi đồng bộ'; sync.error = friendlyError(e); notify();
   }
 }
 
 onChange(source => { if (source === 'local' && sync.user) schedulePush(); });
+
+// Lỗi Firebase -> lời giải thích tiếng Việt
+const ERRORS = {
+  'auth/unauthorized-domain': 'Tên miền này chưa được phép đăng nhập. Vào Firebase → Authentication → Settings → Authorized domains và thêm tên miền của app.',
+  'auth/operation-not-allowed': 'Cách đăng nhập này chưa được bật. Vào Firebase → Authentication → Sign-in method để bật Google hoặc Email/Password.',
+  'auth/configuration-not-found': 'Authentication chưa được bật trong Firebase. Vào Firebase → Authentication → Get started.',
+  'auth/invalid-credential': 'Email hoặc mật khẩu không đúng.',
+  'auth/wrong-password': 'Mật khẩu không đúng.',
+  'auth/user-not-found': 'Chưa có tài khoản với email này. Bấm "Tạo tài khoản".',
+  'auth/email-already-in-use': 'Email này đã có tài khoản. Bấm "Đăng nhập".',
+  'auth/weak-password': 'Mật khẩu cần ít nhất 6 ký tự.',
+  'auth/invalid-email': 'Email không hợp lệ.',
+  'auth/popup-closed-by-user': 'Cửa sổ đăng nhập đã bị đóng. Hãy thử lại.',
+  'auth/network-request-failed': 'Không có mạng. Kiểm tra kết nối rồi thử lại.',
+  'permission-denied': 'Firestore từ chối lưu dữ liệu. Kiểm tra lại phần Rules của Firestore Database.',
+};
+export function friendlyError(e) {
+  const code = e?.code || (String(e?.message || '').match(/\(([^)]+)\)/) || [])[1];
+  return ERRORS[code] || String(e?.message || e);
+}

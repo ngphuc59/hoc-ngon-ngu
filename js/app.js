@@ -4,7 +4,7 @@ import { LANGS, LANG, speakText, romanization } from './langs.js';
 import { speak, hasVoice, ttsSupported, srSupported, listen, similarity } from './audio.js';
 import { state, onChange, setSettings, answer, markSeen, addXp, streak, langStats, rec, today, resetAll } from './store.js';
 import { wikiImage, commonsMedia, youglishUrl } from './media.js';
-import { sync, syncAvailable, onSync, initSync, signInGoogle, signInEmail, signOut } from './sync.js';
+import { sync, syncAvailable, onSync, initSync, signInGoogle, signInEmail, signOut, friendlyError } from './sync.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -649,7 +649,7 @@ document.addEventListener('click', async ev => {
       speak(q.say, q.lang, S().rate);
       $('.drill-fb', box).innerHTML = `<button class="btn primary" data-act="${box._kind}-drill">Tiếp →</button>`;
     } break;
-    case 'login-google': try { await signInGoogle(); } catch (e) { sync.error = e.message; render(); } break;
+    case 'login-google': try { await signInGoogle(); } catch (e) { sync.error = friendlyError(e); render(); } break;
     case 'logout': await signOut(); render(); break;
     case 'reset':
       if (el.dataset.confirm) resetAll();
@@ -680,7 +680,7 @@ document.addEventListener('submit', async ev => {
   ev.preventDefault();
   const create = ev.submitter?.name === 'create';
   try { await signInEmail(f.email.value, f.pass.value, create); sync.error = ''; }
-  catch (e) { sync.error = e.message; }
+  catch (e) { sync.error = friendlyError(e); }
   render();
 });
 
